@@ -23,8 +23,14 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void IntendMoveForward(float Throw);
+
+	UFUNCTION(BlueprintCallable)
+		void IntendTurnRight(float Throw);
+
 	UFUNCTION(BlueprintCallable)
 		void Initialize(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet);
+
+	virtual void RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed) override;
 
 private:
 

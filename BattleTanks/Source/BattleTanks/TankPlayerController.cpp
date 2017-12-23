@@ -60,7 +60,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 			return true;
 		}
 
-		DrawDebugLine(
+	/*	DrawDebugLine(
 			GetWorld(),
 			PlayerCameraManager->GetCameraLocation(),
 			PlayerCameraManager->GetCameraLocation() + (LookDirection * LineTraceRange),
@@ -69,7 +69,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 			0.f,
 			0,
 			5.f
-			);
+			);*/
 
 		/*UE_LOG(LogTemp, Warning, TEXT("Retical Location World: %s"), *LookDirection.ToString())*/
 	}

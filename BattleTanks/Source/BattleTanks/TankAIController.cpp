@@ -20,6 +20,8 @@ void ATankAIController::Tick(float DeltaTime)
 
 	if (PlayerTank)
 	{
+		MoveToActor(PlayerTank, AcceptanceRadius);
+
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
 
 		ControlledTank->Fire();
@@ -37,13 +39,3 @@ void ATankAIController::AimAt(FVector)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Player Possessing Tank: %s"), *GetPlayerControlledTank()->GetName())
 }
-
-//ATank* ATankAIController::GetControlledTank() const
-//{
-//	return;
-//}
-
-//ATank * ATankAIController::GetPlayerControlledTank() const
-//{
-//	return Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-//}

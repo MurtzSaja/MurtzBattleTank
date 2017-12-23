@@ -26,13 +26,10 @@ public:
 
 	void AimAt(FVector);
 
+	UPROPERTY(EditDefaultsOnly)
+		float AcceptanceRadius = 0.f;
+
 private:
-
-//ATank* GetControlledTank() const;
-
-//ATank* GetPlayerControlledTank() const;
-
-	
 
 	ATank * ControlledTank = nullptr;
 
