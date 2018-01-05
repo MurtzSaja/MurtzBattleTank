@@ -24,14 +24,6 @@ public:
 
 	virtual void BeginPlay()override;
 
-	void AimAt(FVector);
-
 	UPROPERTY(EditDefaultsOnly)
 		float AcceptanceRadius = 0.f;
-
-private:
-
-	ATank * ControlledTank = nullptr;
-
-	ATank* PlayerTank = nullptr;
 };

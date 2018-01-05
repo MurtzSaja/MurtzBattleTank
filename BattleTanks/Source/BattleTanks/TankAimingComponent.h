@@ -7,28 +7,53 @@
 #include "TankAimingComponent.generated.h"
 
 class UTankBarrel;
-
 class UTankTurret;
+class AProjectile;
+
+UENUM()
+enum class EFiringStatus : uint8
+{
+	Aiming,
+	Locked,
+	Reloading
+};
+
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANKS_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-	public:
-		// Sets default values for this component's properties
+public:
+	// Sets default values for this component's properties
 	UTankAimingComponent();
 
 	float BarrelDegreePersecond = 5.f;
 
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
+	void AimAt(FVector HitLocation);
 
-	void SetTurretReference(UTankTurret* TurretToSet);
+	UFUNCTION(BlueprintCallable)
+		void Fire();
 
-	void AimAt(FVector HitLocation, float ProjectileSpeed);
+protected:
 
-	private:
-		// Called every frame
+	UPROPERTY(BlueprintReadOnly)
+		EFiringStatus FiringState = EFiringStatus::Reloading;
+
+	UFUNCTION(BlueprintCallable)
+		void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
+
+	UPROPERTY(EditDefaultsOnly)
+		float ProjectileSpeed = 4000.f;
+
+	UPROPERTY(EditDefaultsOnly)
+		float FireInterval = 3.f;
+
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<AProjectile> Projectile;
+
+private:
+	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	virtual void BeginPlay() override;
@@ -37,5 +62,11 @@ class BATTLETANKS_API UTankAimingComponent : public UActorComponent
 
 	UTankTurret* Turret = nullptr;
 
+	FVector CurrentAimDirection;
+
 	void MoveTowardsAimDirection(FVector AimDirection);
+	bool IsBarrelMoving();
+	float FireTimer = 0.f;
+
+	bool bFire = false;
 };
