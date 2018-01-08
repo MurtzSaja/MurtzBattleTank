@@ -43,10 +43,14 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 	FVector HitLocation;
 
-	if (GetSightRayHitLocation(HitLocation))
-	{
-		AimingComponent->AimAt(HitLocation);
-	}
+	bool bGotHitLocation = GetSightRayHitLocation(HitLocation);
+
+	UE_LOG(LogTemp, Warning, TEXT("bGotHitLocation: %d"), bGotHitLocation)
+
+		if (bGotHitLocation)
+		{
+			AimingComponent->AimAt(HitLocation);
+		}
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
@@ -62,13 +66,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	FColor linecolor;
 	if (GetLookDirection(CrossHairScreenPosition, LookDirection))
 	{
-
-		if (GetLookVectorHitLocation(LookDirection, OutHitLocation))
-		{
-			return true;
-		}
-
-	/*	DrawDebugLine(
+		/*DrawDebugLine(
 			GetWorld(),
 			PlayerCameraManager->GetCameraLocation(),
 			PlayerCameraManager->GetCameraLocation() + (LookDirection * LineTraceRange),
@@ -77,9 +75,11 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 			0.f,
 			0,
 			5.f
-			);*/
+		);*/
 
-		/*UE_LOG(LogTemp, Warning, TEXT("Retical Location World: %s"), *LookDirection.ToString())*/
+		return GetLookVectorHitLocation(LookDirection, OutHitLocation);
+
+/*UE_LOG(LogTemp, Warning, TEXT("Retical Location World: %s"), *LookDirection.ToString())*/
 	}
 
 	/*UE_LOG(LogTemp, Warning, TEXT("Retical Location World: %s"), *ScreenWorldDirection.ToString())*/
@@ -106,8 +106,8 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	if (GetWorld()->LineTraceSingleByChannel(HitObject, PlayerCameraManager->GetCameraLocation(), PlayerCameraManager->GetCameraLocation() + LookDirection * LineTraceRange, ECollisionChannel::ECC_Visibility))
 	{
 		OutHitLocation = HitObject.Location;
-		//UE_LOG(LogTemp, Warning, TEXT("Line Hit:  %s"), *HitObject.GetActor()->GetName())
-		return true;
+		UE_LOG(LogTemp, Warning, TEXT("%s Hit:  %s"), *GetName(), *HitObject.GetActor()->GetName())
+			return true;
 	}
 	return false;
 }

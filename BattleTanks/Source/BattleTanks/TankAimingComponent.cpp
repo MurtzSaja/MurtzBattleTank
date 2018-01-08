@@ -75,6 +75,12 @@ void UTankAimingComponent::Fire()
 	}
 
 }
+
+EFiringStatus UTankAimingComponent::GetFiringState()
+{
+	return FiringState;
+}
+
 void UTankAimingComponent::AimAt(FVector HitLocation)
 {
 	//auto TankName = GetOwner()->GetName();
@@ -127,8 +133,16 @@ void UTankAimingComponent::MoveTowardsAimDirection(FVector AimDirection)
 
 	Barrel->Elevate(DeltaRotator.Pitch);
 
-	Turret->RotateTurret(DeltaRotator.Yaw);
+	if (FMath::Abs(DeltaRotator.Yaw) < 180)
+	{
+		Turret->RotateTurret(DeltaRotator.Yaw);
+	}
+	else
+	{
+		Turret->RotateTurret(-DeltaRotator.Yaw);
+	}
 }
+
 
 bool UTankAimingComponent::IsBarrelMoving()
 {
