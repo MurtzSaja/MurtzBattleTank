@@ -24,6 +24,8 @@ public:
 
 	virtual void BeginPlay()override;
 
+protected:
+
 	UPROPERTY(EditDefaultsOnly)
 		float AcceptanceRadius = 0.f;
 };

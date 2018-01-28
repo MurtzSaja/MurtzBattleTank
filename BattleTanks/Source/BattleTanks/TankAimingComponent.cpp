@@ -14,6 +14,7 @@ UTankAimingComponent::UTankAimingComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
+
 	// ...
 }
 
@@ -21,6 +22,7 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	CurrentAmmoCount = AmmoCount;
 	FireTimer = FPlatformTime::Seconds();
 	// ...
 
@@ -38,7 +40,11 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if ((FPlatformTime::Seconds() - FireTimer) < FireInterval)
+	if (CurrentAmmoCount <= 0)
+	{
+		FiringState = EFiringStatus::Empty;
+	}
+	else if ((FPlatformTime::Seconds() - FireTimer) < FireInterval)
 	{
 		FiringState = EFiringStatus::Reloading;
 	}
@@ -50,13 +56,12 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	{
 		FiringState = EFiringStatus::Locked;
 	}
-
 }
 
 void UTankAimingComponent::Fire()
 {
 
-	if (FiringState != EFiringStatus::Reloading)
+	if (FiringState == EFiringStatus::Locked || FiringState == EFiringStatus::Aiming)
 	{
 		if (!ensure(Barrel))
 		{
@@ -71,9 +76,16 @@ void UTankAimingComponent::Fire()
 
 		projectile->Launch(ProjectileSpeed);
 
+		CurrentAmmoCount--;
+
 		FireTimer = FPlatformTime::Seconds();
 	}
 
+}
+
+int UTankAimingComponent::GetCurrentAmmoCount() const
+{
+	return CurrentAmmoCount;
 }
 
 EFiringStatus UTankAimingComponent::GetFiringState()

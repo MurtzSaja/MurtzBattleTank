@@ -45,12 +45,12 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 	bool bGotHitLocation = GetSightRayHitLocation(HitLocation);
 
-	UE_LOG(LogTemp, Warning, TEXT("bGotHitLocation: %d"), bGotHitLocation)
+	//UE_LOG(LogTemp, Warning, TEXT("bGotHitLocation: %d"), bGotHitLocation)
 
-		if (bGotHitLocation)
-		{
-			AimingComponent->AimAt(HitLocation);
-		}
+	if (bGotHitLocation)
+	{
+		AimingComponent->AimAt(HitLocation);
+	}
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
@@ -106,8 +106,8 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	if (GetWorld()->LineTraceSingleByChannel(HitObject, PlayerCameraManager->GetCameraLocation(), PlayerCameraManager->GetCameraLocation() + LookDirection * LineTraceRange, ECollisionChannel::ECC_Visibility))
 	{
 		OutHitLocation = HitObject.Location;
-		UE_LOG(LogTemp, Warning, TEXT("%s Hit:  %s"), *GetName(), *HitObject.GetActor()->GetName())
-			return true;
+	//	UE_LOG(LogTemp, Warning, TEXT("%s Hit:  %s"), *GetName(), *HitObject.GetActor()->GetName())
+		return true;
 	}
 	return false;
 }

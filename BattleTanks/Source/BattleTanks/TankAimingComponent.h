@@ -15,7 +15,8 @@ enum class EFiringStatus : uint8
 {
 	Aiming,
 	Locked,
-	Reloading
+	Reloading,
+	Empty
 };
 
 
@@ -34,6 +35,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void Fire();
+
+	UFUNCTION(BlueprintCallable)
+		int GetCurrentAmmoCount() const;
 
 	EFiringStatus GetFiringState();
 
@@ -54,6 +58,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AProjectile> Projectile;
 
+	UPROPERTY(EditDefaultsOnly)
+		int AmmoCount = 3;
+
 private:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -71,4 +78,6 @@ private:
 	float FireTimer = 0.f;
 
 	bool bFire = false;
+
+	int CurrentAmmoCount = 0;
 };
